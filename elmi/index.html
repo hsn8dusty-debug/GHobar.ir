@@ -1,19 +1,34 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بخش علمی | غبار</title>
+  <title>ادبیات عرب | فهرست جستجو و مقالات</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
   <style>
-    :root {
-      --bg: #0f172a;
-      --card-bg: rgba(30, 41, 59, 0.7);
+    /* تعریف پالت رنگی برای تم تاریک و روشن */
+    :root[data-theme="dark"] {
+      --bg: #090d16;
+      --card-bg: rgba(20, 27, 45, 0.7);
       --card-border: rgba(255, 255, 255, 0.08);
-      --card-hover: rgba(51, 65, 85, 0.9);
-      --text: #f8fafc;
+      --card-hover: rgba(30, 41, 69, 0.8);
+      --text: #f1f5f9;
       --text-muted: #94a3b8;
       --accent: #38bdf8;
+      --accent-bg: rgba(56, 189, 248, 0.1);
+      --input-bg: rgba(15, 23, 42, 0.8);
+    }
+
+    :root[data-theme="light"] {
+      --bg: #f8fafc;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(0, 0, 0, 0.08);
+      --card-hover: rgba(241, 245, 249, 1);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent: #0284c7;
+      --accent-bg: rgba(2, 132, 199, 0.1);
+      --input-bg: #ffffff;
     }
 
     * {
@@ -21,116 +36,311 @@
       margin: 0;
       padding: 0;
       font-family: 'Vazirmatn', system-ui, sans-serif;
+      transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
     }
 
     body {
-      background: radial-gradient(circle at top, #1e293b, var(--bg));
+      background: var(--bg);
       color: var(--text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2.5rem 1.25rem;
+      padding: 2rem 1rem 4rem;
     }
 
-    .top-bar {
+    .container {
       width: 100%;
-      max-width: 650px;
-      margin-bottom: 2rem;
+      max-width: 680px;
     }
 
-    .back-btn {
+    /* نوار ناوبری بالا + دکمه‌ها */
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      width: 100%;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      color: var(--accent);
+      gap: 0.4rem;
+      color: var(--text);
       text-decoration: none;
-      font-size: 0.9rem;
-      padding: 0.4rem 0.8rem;
-      background: rgba(56, 189, 248, 0.1);
-      border-radius: 8px;
-      border: 1px solid rgba(56, 189, 248, 0.2);
+      font-size: 0.85rem;
+      padding: 0.45rem 0.85rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      cursor: pointer;
     }
 
+    .btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* سربرگ */
     header {
-      text-align: center;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.5rem;
+      text-align: right;
     }
 
     h1 {
-      font-size: 1.8rem;
+      font-size: 1.7rem;
       font-weight: 800;
-      color: #fff;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.3rem;
     }
 
     header p {
       color: var(--text-muted);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
-    .list {
+    /* کادر جستجو */
+    .search-box {
+      margin-bottom: 1.8rem;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.85rem 1rem 0.85rem 2.8rem;
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-bg);
+    }
+
+    /* لیست آیتم‌ها */
+    .posts-list {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      width: 100%;
-      max-width: 650px;
+      gap: 1.1rem;
     }
 
-    .sub-card {
+    .post-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 1.25rem 1.5rem;
-      text-decoration: none;
-      color: inherit;
+      border-radius: 16px;
+      padding: 1.25rem;
       backdrop-filter: blur(10px);
-      transition: all 0.2s ease;
+    }
+
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.8rem;
+    }
+
+    .post-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    /* دکمه فلش آکاردئونی */
+    .toggle-desc-btn {
+      background: var(--accent-bg);
+      border: none;
+      color: var(--accent);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: transform 0.25s ease;
+      font-size: 0.8rem;
+    }
+
+    .toggle-desc-btn.open {
+      transform: rotate(180deg);
+    }
+
+    /* متن توضیحات بازشونده */
+    .post-desc {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      margin-top: 0.75rem;
+      position: relative;
+    }
+
+    .post-desc.collapsed {
+      display: -webkit-box;
+      -webkit-line-clamp: 2; /* نمایش فقط ۲ خط در حالت بسته */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* پانوشت کارت شامل برچسب و دکمه ورود */
+    .post-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-top: 1.2rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid var(--card-border);
     }
 
-    .sub-card:hover, .sub-card:active {
-      transform: translateX(-4px);
-      background: var(--card-hover);
-      border-color: rgba(56, 189, 248, 0.4);
+    .post-tag {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--accent-bg);
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
     }
 
-    .title {
+    .read-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      text-decoration: none;
+      font-size: 0.82rem;
       font-weight: 700;
-      font-size: 1.1rem;
+      color: var(--accent);
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--accent);
+    }
+
+    .read-btn:hover {
+      background: var(--accent);
       color: #fff;
     }
 
-    .arrow {
-      color: var(--accent);
-      font-size: 1.2rem;
+    .no-results {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      display: none;
     }
   </style>
 </head>
 <body>
 
-  <div class="top-bar">
-    <a href="../index.html" class="back-btn">→ بازگشت به صفحه اصلی</a>
+  <div class="container">
+    
+    <!-- نوار ناوبری و تغییر تم -->
+    <nav class="nav-bar">
+      <div class="nav-links">
+        <a href="../../index.html" class="btn">🏠 خانه</a>
+        <a href="../index.html" class="btn">→ بخش علمی</a>
+      </div>
+      <button class="btn" id="themeToggle" onclick="toggleTheme()">🌓 تغییر تم</button>
+    </nav>
+
+    <header>
+      <h1>ادبیات عرب</h1>
+      <p>فهرست یادداشت‌ها، پژوهش‌های نحوی و بلاغت</p>
+    </header>
+
+    <!-- کادر جستجو -->
+    <div class="search-box">
+      <input type="text" id="searchInput" class="search-input" placeholder="جستجو در عنوان یا متن مقالات..." onkeyup="filterPosts()">
+    </div>
+
+    <!-- فهرست مقالات -->
+    <main class="posts-list" id="postsContainer">
+
+      <!-- کارت مقاله ۱ -->
+      <article class="post-card">
+        <div class="post-header">
+          <h2 class="post-title">بررسی ساختار نحوی جمله و صناعت التفات در بافت کلام کهن</h2>
+          <button class="toggle-desc-btn" onclick="toggleExpand(this)">▼</button>
+        </div>
+        <p class="post-desc collapsed">
+          التفات در علم بلاغت، انحراف از سیاق متبادر کلام به سوی جهتی دیگر است؛ به‌گونه‌ای که مقتضای ظاهر را نقض کند و به لطف معنا یا توجه مخاطب بیفزاید. این پژوهش به بررسی دگرگونی ضمایر، زمان افعال و کارکردهای زیبایی‌شناختی آن در آیات و شواهد شعری اختصاص دارد.
+        </p>
+        <div class="post-footer">
+          <span class="post-tag">نحو و بلاغت</span>
+          <a href="Post1.html" class="read-btn">مطالعه کامل مطلب ←</a>
+        </div>
+      </article>
+
+      <!-- کارت نمونه مقاله ۲ (برای تست سرچ و لیست) -->
+      <article class="post-card">
+        <div class="post-header">
+          <h2 class="post-title">جایگاه تنازع در نحو عربی و دیدگاه بصریان و کوفیان</h2>
+          <button class="toggle-desc-btn" onclick="toggleExpand(this)">▼</button>
+        </div>
+        <p class="post-desc collapsed">
+          بررسی تقابل رویکرد مکتب بصره و کوفه در تقدم عامل اول یا دوم در باب تنازع العاملین، همراه با دلایل عقلی و شواهد قرآنی برای هر یک از اقوال نحویان کهن.
+        </p>
+        <div class="post-footer">
+          <span class="post-tag">مکاتب نحوی</span>
+          <a href="#" class="read-btn">مطالعه کامل مطلب ←</a>
+        </div>
+      </article>
+
+    </main>
+
+    <div id="noResults" class="no-results">موردی با این عبارت یافت نشد.</div>
+
   </div>
 
-  <header>
-    <h1>بخش پژوهش‌های علمی</h1>
-    <p>انتخاب شاخهٔ موضوعی</p>
-  </header>
+  <script>
+    /* کنترل باز و بسته شدن توضیحات (آکاردئون) */
+    function toggleExpand(btn) {
+      btn.classList.toggle('open');
+      const desc = btn.closest('.post-card').querySelector('.post-desc');
+      desc.classList.toggle('collapsed');
+    }
 
-  <main class="list">
-    <a href="Arabi/Post1.html" class="sub-card">
-      <span class="title">ادبیات عرب (صرف، نحو و بلاغت)</span>
-      <span class="arrow">←</span>
-    </a>
+    /* جستجوی زنده در عنوان و خلاصه */
+    function filterPosts() {
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.post-card');
+      let visibleCount = 0;
 
-    <a href="falsafe/index.html" class="sub-card">
-      <span class="title">منطق و حکمت</span>
-      <span class="arrow">←</span>
-    </a>
-  </main>
+      cards.forEach(card => {
+        const title = card.querySelector('.post-title').textContent.toLowerCase();
+        const desc = card.querySelector('.post-desc').textContent.toLowerCase();
 
+        if (title.includes(q) || desc.includes(q)) {
+          card.style.display = 'block';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      document.getElementById('noResults').style.display = (visibleCount === 0) ? 'block' : 'none';
+    }
+
+    /* تغییر تم تاریک و روشن + ماندگاری */
+    function toggleTheme() {
+      const root = document.documentElement;
+      const current = root.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('site-theme', next);
+    }
+
+    /* بازگردانی تم ذخیره‌شده */
+    const savedTheme = localStorage.getItem('site-theme');
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+  </script>
 </body>
 </html>
